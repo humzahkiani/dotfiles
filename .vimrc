@@ -4,6 +4,14 @@ let mapleader = " "  " Set space as leader key
 
 let g:vimrubocop_config = '~/.vim/plugged/vim-rubocop/rubocop.yml'
 
+" === Visual Settings ===
+set updatetime=300
+set showmode
+set showcmd
+set statusline=%F
+set laststatus=2
+hi StatusLine ctermbg=white ctermfg=black guibg=black guifg=white
+
 " === General Settings ===
 set scroll=5
 set number
@@ -14,18 +22,13 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set scrolloff=8
+set hlsearch
 set incsearch
 set smartcase
 set nowrap
 
 " Keep scroll same value after resizing
 autocmd VimResized * :set scroll=5
-
-" === Visual Settings ===
-set updatetime=300
-" set clipboard=unnamedplus
-set showmode
-set showcmd
 
 " === Better Whitespace Handling ===
 " set listchars=tab:>·,trail:·,extends:>,precedes:<,nbsp:+
@@ -52,6 +55,8 @@ Plug 'vim-rubocop/plugin/vim-rubocop'
 
 call plug#end()
 
+
+filetype plugin indent on
 " === Ruby indentation settings ===
 autocmd FileType ruby setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
