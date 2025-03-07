@@ -5,6 +5,7 @@ dotfiles=(
   "$HOME/.vimrc"
   "$HOME/.zshrc"
   "$HOME/.bashrc"
+  "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
   # Add other config files here
 )
 

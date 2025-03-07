@@ -1,0 +1,13 @@
+
+keybind = global:cmd+shift+t=toggle_quick_terminal
+keybind = global:cmd+enter=toggle_fullscreen
+
+quick-terminal-animation-duration = 0.1
+# macos-auto-secure-input = true
+
+# font-family = Monaspace Neon Var
+theme = Adventure
+
+cursor-style = bar
+
+quick-terminal-position = top
