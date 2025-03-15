@@ -129,6 +129,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias v="nvim"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 
 #Add Python 3.7 to Path

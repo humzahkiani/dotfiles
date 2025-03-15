@@ -6,6 +6,7 @@ dotfiles=(
   "$HOME/.zshrc"
   "$HOME/.bashrc"
   "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+  "$HOME/.config/nvim/init.lua"
   # Add other config files here
 )
 
