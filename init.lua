@@ -144,8 +144,8 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -159,6 +159,9 @@ vim.opt.scrolloff = 10
 -- Set scrolling distance
 vim.opt.scroll = 5
 
+-- Set top bar to be filename
+-- vim.opt.winbar = "%m %f"
+--
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -1015,6 +1018,7 @@ require("lazy").setup({
 
 						return MiniStatusline.combine_groups({
 							{ hl = mode_hl, strings = { mode } },
+							-- { hl = "MiniStatuslineDevInfo", strings = { filename } },
 							{ hl = "MiniStatuslineDevInfo", strings = { git } },
 							"%<", -- Mark general truncate point
 							{ hl = "MiniStatuslineFilename", strings = { diff, diagnostics, lsp } },
@@ -1024,8 +1028,10 @@ require("lazy").setup({
 					end,
 					-- Content for inactive window(s)
 					inactive = function()
+						-- local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 
 						return MiniStatusline.combine_groups({
+							-- { hl = "MiniStatuslineDevInfo", strings = { filename } },
 							"%<", -- Mark general truncate point
 							"%=", -- End left alignment
 						})
