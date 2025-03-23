@@ -936,6 +936,7 @@ require("lazy").setup({
 			vim.cmd("colorscheme github_dark_high_contrast")
 		end,
 	},
+
 	-- Highlight todo, notes, etc in comments
 	{
 		"folke/todo-comments.nvim",
@@ -966,7 +967,35 @@ require("lazy").setup({
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
 			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
+
+			-- Create a custom winbar function using mini.statusline components
+			_G.custom_winbar = function()
+				local file_info = statusline.section_fileinfo({ trunc_width = 120 })
+
+				-- Extract just the icon part (should be at the beginning before any spaces)
+				local icon = file_info:match("^([^ ]*)") or ""
+
+				-- Get current buffer's filename (tail only, no path)
+				local filename = vim.fn.expand("%:t")
+
+				-- Show a modified flag if needed
+				local modified = vim.bo.modified and " [+]" or ""
+
+				-- Apply the MiniStatuslineDevInfo highlight group
+				return "%#MiniStatuslineDevInfo#" .. filename .. modified .. "%*"
+			end
+
+			-- Set winbar to custom winbar
+			vim.opt.winbar = "%{%v:lua.custom_winbar()%}"
+
+			-- Disable winbar in neo-tree window
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "neo-tree", "neo-tree-popup" },
+				callback = function()
+					vim.opt_local.winbar = nil
+				end,
+			})
+
 			statusline.setup({
 
 				-- Content of statusline as functions which return statusline string. See
@@ -986,19 +1015,17 @@ require("lazy").setup({
 
 						return MiniStatusline.combine_groups({
 							{ hl = mode_hl, strings = { mode } },
-							{ hl = "MiniStatuslineDevInfo", strings = { filename } },
+							{ hl = "MiniStatuslineDevInfo", strings = { git } },
 							"%<", -- Mark general truncate point
-							{ hl = "MiniStatuslineFilename", strings = { git, diff, diagnostics, lsp } },
+							{ hl = "MiniStatuslineFilename", strings = { diff, diagnostics, lsp } },
 							"%=", -- End left alignment
 							{ hl = mode_hl, strings = { search, location } },
 						})
 					end,
 					-- Content for inactive window(s)
 					inactive = function()
-						local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 
 						return MiniStatusline.combine_groups({
-							{ hl = "MiniStatuslineDevInfo", strings = { filename } },
 							"%<", -- Mark general truncate point
 							"%=", -- End left alignment
 						})
