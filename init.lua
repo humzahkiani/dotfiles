@@ -98,6 +98,7 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.opt.scroll = 5
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -205,6 +206,17 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+	callback = function(event)
+		-- Only set scroll for normal editing buffers, not special buffers
+		if vim.bo[event.buf].buftype == "" then
+			-- Use pcall to prevent errors
+			pcall(function()
+				vim.opt_local.scroll = 5
+			end)
+		end
+	end,
+})
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -1167,4 +1179,3 @@ require("lazy").setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-vim.opt.scroll = 5
