@@ -12,3 +12,5 @@ cursor-style = bar
 
 quick-terminal-position = top
 
+scrollback-limit = 100000
+
