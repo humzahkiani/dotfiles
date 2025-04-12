@@ -217,6 +217,22 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end
 	end,
 })
+
+-- Create autocommands to toggle cursorline based on window focus
+vim.api.nvim_create_augroup("CursorLineOnlyInActiveWindow", { clear = true })
+vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
+	group = "CursorLineOnlyInActiveWindow",
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+	group = "CursorLineOnlyInActiveWindow",
+	callback = function()
+		vim.opt_local.cursorline = false
+	end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
