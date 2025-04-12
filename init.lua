@@ -259,6 +259,78 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			options = {
+				globalstatus = true,
+				disabled_filetypes = { winbar = { "neo-tree", "Outline", "qf", "vim" } },
+			},
+			sections = {
+				lualine_a = { "mode" },
+				lualine_b = { "branch", "diff", "diagnostics" },
+				lualine_c = {},
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = { "location" },
+			},
+			inactive_sections = {
+				lualine_a = {},
+				lualine_b = {},
+				lualine_c = {},
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
+			},
+			tabline = {},
+			winbar = {
+				lualine_a = {},
+				lualine_b = {
+					{
+						"filetype",
+						icon_only = true,
+						separator = { left = "", right = "" },
+						padding = 0,
+						color = { bg = "#D8BFD8" },
+					},
+					{
+						"filename",
+						padding = { left = 0, right = 1 },
+						color = { bg = "#D8BFD8", fg = "#1f1d2e", gui = "bold" },
+						separator = { right = "" },
+					},
+				},
+				lualine_c = {},
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
+			},
+			inactive_winbar = {
+				lualine_a = {},
+				lualine_b = {
+					{
+						"filetype",
+						icon_only = true,
+						separator = { left = "", right = "" },
+						padding = 0,
+						color = { bg = "#D8BFD8" },
+					},
+					{
+						"filename",
+						padding = { left = 0, right = 1 },
+						color = { bg = "#D8BFD8", fg = "#1f1d2e", gui = "bold" },
+						separator = { right = "" },
+					},
+				},
+				lualine_c = {},
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
+			},
+			extensions = {},
+		},
+	},
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
@@ -1025,84 +1097,6 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
-
-			-- Simple and easy statusline.
-			--  You could remove this setup call if you don't like it,
-			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
-
-			-- Create a custom winbar function using mini.statusline components
-			_G.custom_winbar = function()
-				-- Get current buffer's filename (tail only, no path)
-				local filename = vim.fn.expand("%:t")
-
-				-- Show a modified flag if needed
-				local modified = vim.bo.modified and " [+]" or ""
-
-				-- Apply the MiniStatuslineDevInfo highlight group
-				return "%#MiniStatuslineDevInfo#" .. filename .. modified .. "%*"
-			end
-
-			-- Set winbar to custom winbar
-			vim.opt.winbar = "%{%v:lua.custom_winbar()%}"
-
-			-- Disable winbar in neo-tree window
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "neo-tree", "neo-tree-popup" },
-				callback = function()
-					vim.opt_local.winbar = ""
-				end,
-			})
-
-			statusline.setup({
-
-				-- Content of statusline as functions which return statusline string. See
-				-- `:h statusline` and code of default contents (used instead of `nil`).
-				--
-				content = {
-					-- Content for active window
-					active = function()
-						local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-						local git = MiniStatusline.section_git({ trunc_width = 40 })
-						local diff = MiniStatusline.section_diff({ trunc_width = 75 })
-						local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-						local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
-						local filename = MiniStatusline.section_filename({ trunc_width = 140 })
-						local location = MiniStatusline.section_location({ trunc_width = 75 })
-						local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
-
-						return MiniStatusline.combine_groups({
-							{ hl = mode_hl, strings = { mode } },
-							{ hl = "MiniStatuslineDevInfo", strings = { git } },
-							"%<", -- Mark general truncate point
-							{ hl = "MiniStatuslineFilename", strings = { diff, diagnostics, lsp } },
-							"%=", -- End left alignment
-							{ hl = mode_hl, strings = { search, location } },
-						})
-					end,
-					-- Content for inactive window(s)
-					inactive = function()
-						return MiniStatusline.combine_groups({
-							"%<", -- Mark general truncate point
-							"%=", -- End left alignment
-						})
-					end,
-				},
-
-				-- Whether to use icons by default
-				use_icons = vim.g.have_nerd_font,
-
-				-- Whether to set Vim's settings for statusline (make it always shown)
-				set_vim_settings = true,
-			})
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
 
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
